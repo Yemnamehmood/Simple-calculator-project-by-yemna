@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Calculator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      font-family: 'Arial', sans-serif;
+    }
+
+    .calculator {
+      width: 350px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .display {
+      width: 100%;
+      height: 70px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      font-size: 2.5rem;
+      text-align: right;
+      padding: 10px;
+      color: #00FF00; /* Bright green text for contrast */
+      box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
+    }
+
+    .buttons button {
+      width: 100%;
+      padding: 20px;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .buttons button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .buttons button.operator {
+      background-color: #FF9500;
+    }
+
+    .buttons button.clear {
+      background-color: #FF3B30;
+    }
+
+    .buttons button.equal {
+      background-color: #34C759;
+    }
+
+    @media (max-width: 400px) {
+      .buttons button {
+        padding: 15px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button onclick="clearDisplay()" class="clear">C</button>
+      <button onclick="appendCharacter('/')" class="operator">/</button>
+      <button onclick="appendCharacter('*')" class="operator">*</button>
+      <button onclick="deleteCharacter()">DEL</button>
+
+      <button onclick="appendCharacter('7')">7</button>
+      <button onclick="appendCharacter('8')">8</button>
+      <button onclick="appendCharacter('9')">9</button>
+      <button onclick="appendCharacter('-')" class="operator">-</button>
+
+      <button onclick="appendCharacter('4')">4</button>
+      <button onclick="appendCharacter('5')">5</button>
+      <button onclick="appendCharacter('6')">6</button>
+      <button onclick="appendCharacter('+')" class="operator">+</button>
+
+      <button onclick="appendCharacter('1')">1</button>
+      <button onclick="appendCharacter('2')">2</button>
+      <button onclick="appendCharacter('3')">3</button>
+      <button onclick="calculate()" class="equal">=</button>
+
+      <button onclick="appendCharacter('0')">0</button>
+      <button onclick="appendCharacter('.')">.</button>
+    </div>
+  </div>
+    
+
+  <script>
+    const display = document.getElementById('display');
+    let hasCalculated = false;
+
+    function appendCharacter(character) {
+      if (hasCalculated) {
+        clearDisplay();
+        hasCalculated = false;
+      }
+      if (display.textContent === '0' || display.textContent === 'Error') {
+        display.textContent = character;
+      } else {
+        display.textContent += character;
+      }
+    }
+
+    function clearDisplay() {
+      display.textContent = '0';
+    }
+
+    function deleteCharacter() {
+      display.textContent = display.textContent.slice(0, -1);
+      if (display.textContent === '') {
+        display.textContent = '0';
+      }
+    }
+
+    function calculate() {
+      try {
+        display.textContent = eval(display.textContent);
+        hasCalculated = true;
+      } catch (error) {
+        display.textContent = 'Error';
+        hasCalculated = true;
+      }
+    }
+  </script>
+
+</body>
+</html>
